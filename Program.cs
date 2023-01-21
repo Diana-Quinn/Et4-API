@@ -1,4 +1,5 @@
 using BankAPI.Data; //INDICAMOS DONDE ESTA ALMACENADO EL PROYECTO
+using BankAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,10 @@ builder.Services.AddSwaggerGen();
 //Añadimos servicio como referencia a la base de datos.
 //DB CONTEXT
 builder.Services.AddSqlServer<BankDbContext>(builder.Configuration.GetConnectionString("BankConnection"));
+
+//Service Layer
+//inyectamos servicio a la aplicacion
+builder.Services.AddScoped<ClientService>();
 
 var app = builder.Build();
 
