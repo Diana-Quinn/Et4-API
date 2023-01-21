@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 //Añadimos servicio como referencia a la base de datos.
 //DB CONTEXT
-builder.Services.AddSqlServer<BankContext>(builder.Configuration.GetConnectionString("BankConnection"));
+builder.Services.AddSqlServer<BankDbContext>(builder.Configuration.GetConnectionString("BankConnection"));
 
 var app = builder.Build();
 

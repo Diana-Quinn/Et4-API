@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankAPI.Data;
 
-public partial class BankContext : DbContext
+public partial class BankDbContext : DbContext
 {
-    public BankContext()
+    public BankDbContext()
     {
     }
 
-    public BankContext(DbContextOptions<BankContext> options)
+    public BankDbContext(DbContextOptions<BankDbContext> options)
         : base(options)
     {
     }
@@ -26,15 +26,12 @@ public partial class BankContext : DbContext
 
     public virtual DbSet<TransactionType> TransactionTypes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=Bank;Trusted_connection=true;trustServerCertificate=true");
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC27894DB0D6");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC270DFBC934");
 
             entity.ToTable("Account");
 
@@ -48,16 +45,16 @@ public partial class BankContext : DbContext
             entity.HasOne(d => d.AccountTypeNavigation).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.AccountType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Account__Account__05D8E0BE");
+                .HasConstraintName("FK__Account__Account__30F848ED");
 
             entity.HasOne(d => d.Client).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.ClientId)
-                .HasConstraintName("FK__Account__ClientI__06CD04F7");
+                .HasConstraintName("FK__Account__ClientI__31EC6D26");
         });
 
         modelBuilder.Entity<AccountType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC27FACA1C45");
+            entity.HasKey(e => e.Id).HasName("PK__AccountT__3214EC27B53FED4F");
 
             entity.ToTable("AccountType");
 
@@ -73,7 +70,7 @@ public partial class BankContext : DbContext
 
         modelBuilder.Entity<BankTransaction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BankTran__3214EC2788EBBDBA");
+            entity.HasKey(e => e.Id).HasName("PK__BankTran__3214EC27B8E13AEC");
 
             entity.ToTable("BankTransaction");
 
@@ -87,23 +84,19 @@ public partial class BankContext : DbContext
             entity.HasOne(d => d.Account).WithMany(p => p.BankTransactions)
                 .HasForeignKey(d => d.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BankTrans__Accou__07C12930");
+                .HasConstraintName("FK__BankTrans__Accou__32E0915F");
 
             entity.HasOne(d => d.TransactionTypeNavigation).WithMany(p => p.BankTransactions)
                 .HasForeignKey(d => d.TransactionType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__BankTrans__Trans__08B54D69");
+                .HasConstraintName("FK__BankTrans__Trans__33D4B598");
         });
 
         modelBuilder.Entity<Client>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Client__3214EC27C0D90633");
+            entity.HasKey(e => e.Id).HasName("PK__Client__3214EC2785972918");
 
-            entity.ToTable("Client", tb =>
-                {
-                    tb.HasTrigger("ClientAfterInsert");
-                    tb.HasTrigger("ClientInsteadOfDelete");
-                });
+            entity.ToTable("Client");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Email)
@@ -124,7 +117,7 @@ public partial class BankContext : DbContext
 
         modelBuilder.Entity<TransactionType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC279677DA5D");
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC27182FAC75");
 
             entity.ToTable("TransactionType");
 

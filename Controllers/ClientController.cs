@@ -8,8 +8,8 @@ namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
 [Route("[controller]")]
 public class ClientController : ControllerBase
 {
-    private readonly BankContext _context; // read only
-    public ClientController(BankContext context)
+    private readonly BankDbContext _context; // read only
+    public ClientController(BankDbContext context)
     {
         _context =  context;
     }
