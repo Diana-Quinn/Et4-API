@@ -98,7 +98,7 @@ public class AccountController : ControllerBase
 
     public NotFoundObjectResult AccountNotFound(int id)
     {
-        return NotFound(new { message = $"El cliente con ID = {id} no existe."});
+        return NotFound(new { message = $"La cuenta con ID = {id} no existe."});
     }
 
     public async Task<string> ValidateAccount(AccountDtoIn account)
