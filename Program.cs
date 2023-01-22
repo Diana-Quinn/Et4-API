@@ -17,6 +17,8 @@ builder.Services.AddSqlServer<BankDbContext>(builder.Configuration.GetConnection
 //Service Layer
 //inyectamos servicio a la aplicacion
 builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountTypeService>();
 
 var app = builder.Build();
 

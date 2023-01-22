@@ -16,65 +16,70 @@ public class ClientController : ControllerBase
     }
     
     [HttpGet] //Solicitud GET
-    public IEnumerable<Client> Get()//Devuelve lista de clientes
+    public async Task<IEnumerable<Client>> Get()//Devuelve lista de clientes
     {
-        return _service.GetAll(); 
+        return await _service.GetAll(); 
     }
 
     [HttpGet("{id}")] 
-    public ActionResult<Client> GetById(int id) //Objeto ActionResult obtiene diferentes metodos de la clase ControllerBase
+    public async Task<ActionResult<Client>> GetById(int id) //Objeto ActionResult obtiene diferentes metodos de la clase ControllerBase
     {
-        var client = _service.GetById(id); //devuelve registro existente
+        var client = await _service.GetById(id); //devuelve registro existente
 
         if (client is null) //no se encontró un registro con ese ID
-            return NotFound();//404
+            return ClientNotFound(id);//404
         
         return client; // SI SE ENCUENTRA, DEVUELVE A ESE CLIENTE
     }
     
 
     [HttpPost]
-    public IActionResult Create(Client client)//objeto de tipo cliente, llamado cliente
+    public async Task<IActionResult> Create(Client client)//objeto de tipo cliente, llamado cliente
     {   //crea cliente
-        var newClient = _service.Create(client);
+        var newClient = await _service.Create(client);
         //devuelve info cliente
         return CreatedAtAction(nameof(GetById), new { id = newClient.Id}, client );//201 created
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, Client client)
+    public async Task<IActionResult> Update(int id, Client client)
     {
         if(id != client.Id)//si el id que enviamos en la solicitud es diferente al del objeto
-            return BadRequest();//400
+            return BadRequest((new { message = $"El ID = {id} de la URL no coincide con el ID = {client.Id} del cuerpo de la solicitud"}));//400
         
-        var clientToUpdate = _service.GetById(id); //devuelve registro existente
+        var clientToUpdate = await _service.GetById(id); //devuelve registro existente
         
         if (clientToUpdate is not null) //si existe
         {
-            _service.Update(id, client);
+           await _service.Update(id, client);
              return NoContent();
         }
         else
         {
-            return NotFound();
+            return ClientNotFound(id);
         }
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var clientToDelete = _service.GetById(id);
+        var clientToDelete = await _service.GetById(id);
 
         if(clientToDelete is not null)
         {
-            _service.Delete(id);
+            await _service.Delete(id);
             return Ok();
 
         }
         else
         {
-            return NotFound();
+            return ClientNotFound(id);
         }
+    }
+
+    public NotFoundObjectResult ClientNotFound(int id)
+    {
+        return NotFound(new { message = $"El cliente con ID = {id} no existe."});
     }
 
 }
