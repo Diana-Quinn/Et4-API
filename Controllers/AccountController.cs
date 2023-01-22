@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;//ControllerBase
 //using BankAPI.Data;//Para acceder a BankContext
 using BankAPI.Services;
 using BankAPI.Data.BankModels;//para acceder a Client
+using TestBankAPI.Data.DTOs;
 
 namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
 
@@ -23,15 +24,15 @@ public class AccountController : ControllerBase
     }
     
     [HttpGet] //Solicitud GET
-    public async Task<IEnumerable<Account>> Get()
+    public async Task<IEnumerable<AccountDtoOut>> Get()
     {
         return await accountService.GetAll(); 
     }
 
     [HttpGet("{id}")] 
-    public async Task<ActionResult<Account>> GetById(int id) 
+    public async Task<ActionResult<AccountDtoOut>> GetById(int id) 
     {
-        var account = await accountService.GetById(id); 
+        var account = await accountService.GetDtoById(id); 
 
         if (account is null) 
             return AccountNotFound(id);//404
@@ -41,7 +42,7 @@ public class AccountController : ControllerBase
     
 
     [HttpPost]
-    public async Task<IActionResult> Create(Account account)//objeto de tipo cliente, llamado cliente
+    public async Task<IActionResult> Create(AccountDtoIn account)//objeto de tipo cliente, llamado cliente
     {
         string validationResult = await ValidateAccount(account);
 
@@ -54,7 +55,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Account account)
+    public async Task<IActionResult> Update(int id, AccountDtoIn account)
     {
         if(id != account.Id)//si el id que enviamos en la solicitud es diferente al del objeto
             return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID = {account.Id} del cuerpo de la solicitud"});//400
@@ -100,7 +101,7 @@ public class AccountController : ControllerBase
         return NotFound(new { message = $"El cliente con ID = {id} no existe."});
     }
 
-    public async Task<string> ValidateAccount(Account account)
+    public async Task<string> ValidateAccount(AccountDtoIn account)
     {
         string result = "Valid";
 
