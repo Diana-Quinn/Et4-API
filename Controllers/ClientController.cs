@@ -16,7 +16,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpGet] //Solicitud GET
-    public async Task<IEnumerable<Client>> Get()//Devuelve lista de clientes
+    public async Task<IEnumerable<Client>> Get() //Devuelve lista de clientes
     {
         return await _service.GetAll(); 
     }

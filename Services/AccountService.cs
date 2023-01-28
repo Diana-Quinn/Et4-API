@@ -39,7 +39,7 @@ public class AccountService
                 ClientName = a.Client != null ? a.Client.Name : "",
                 Balance = a.Balance,
                 RegDate = a.RegDate
-            }).SingleOrDefaultAsync();
+            }).SingleOrDefaultAsync();//devuelve un objeto AccountDtoOut o un nulo
       }
 
 
