@@ -32,10 +32,10 @@ public class BankTransactionService
         var newBankTransaction = new BankTransaction();
 
         //newBankTransaction.Id = newBankTransaction.Id;
-        newBankTransaction.AccountId =  newBankTransaction.AccountId;
-        newBankTransaction.TransactionType = newBankTransaction.TransactionType;
-        newBankTransaction.Amount = newBankTransaction.Amount;
-        newBankTransaction.ExternalAccount = newBankTransaction.ExternalAccount;
+        newBankTransaction.AccountId =  newBankTransactionDTO.AccountId;
+        newBankTransaction.TransactionType = newBankTransactionDTO.TransactionType;
+        newBankTransaction.Amount = newBankTransactionDTO.Amount;
+        newBankTransaction.ExternalAccount = newBankTransactionDTO.ExternalAccount;
         
         //crea cliente
         _context.BankTransactions.Add(newBankTransaction);
@@ -50,7 +50,7 @@ public class BankTransactionService
        
         if (existingBankTransaction is not null) //si no es nulo, modificamos info
         {
-           existingBankTransaction.AccountId = existingBankTransaction.AccountId;
+           existingBankTransaction.AccountId = bankTransaction.AccountId;
            existingBankTransaction.TransactionType = bankTransaction.TransactionType;
            existingBankTransaction.Amount = bankTransaction.Amount;
            existingBankTransaction.ExternalAccount = bankTransaction.ExternalAccount;
