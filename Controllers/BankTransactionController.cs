@@ -18,11 +18,12 @@ public class BankTransactionController : ControllerBase
     private readonly BankTransactionService bankTransactionService;
 
 
-    public BankTransactionController(AccountService accountService,
-                            AccountTypeService accountTypeService,
-                            ClientService clientService,
-                            TransactionTypeService transactionTypeService,
-                            BankTransactionService bankTransactionService)
+    public BankTransactionController(
+        AccountService accountService,
+        AccountTypeService accountTypeService,
+        ClientService clientService,
+        TransactionTypeService transactionTypeService,
+        BankTransactionService bankTransactionService)
     {
         this.accountService = accountService;
         this.accountTypeService = accountTypeService;
@@ -53,6 +54,8 @@ public class BankTransactionController : ControllerBase
     public async Task<IActionResult> Create(BankTransactionDTO bankTransaction)//objeto de tipo cliente, llamado cliente
     {   //crea cliente
         var newBankTransaction = await bankTransactionService.Create(bankTransaction);
+        await this.UpdateAccountBalance(newBankTransaction);
+
         //devuelve info cliente
         return CreatedAtAction(nameof(GetById), new { id = newBankTransaction.Id}, newBankTransaction );//201 created
     }
@@ -68,6 +71,7 @@ public class BankTransactionController : ControllerBase
         if (bankTransactionToUpdate is not null) //si existe
         {
            await bankTransactionService.Update(bankTransaction);
+
              return NoContent();
         }
         else
@@ -85,7 +89,6 @@ public class BankTransactionController : ControllerBase
         {
             await bankTransactionService.Delete(id);
             return Ok();
-
         }
         else
         {
@@ -97,5 +100,32 @@ public class BankTransactionController : ControllerBase
     {
         return NotFound(new { message = $"El Bank Transaction con ID = {id} no existe."});
     }
+    
+
+    public async Task UpdateAccountBalance(BankTransaction bankTransaction)
+    {
+        // seleccionamos la cuenta de donde se hace la transaccion
+        var account = bankTransaction.Account;
+        
+        // hacer la suma/resta correspondiente
+        switch (bankTransaction.TransactionType) {
+            case 1: // Depositos
+            case 3:
+                account.Balance += bankTransaction.Amount;
+            break;
+
+            case 2: // Retiros
+            case 4:
+                account.Balance -= bankTransaction.Amount;
+            break;
+
+            default:
+            break;
+        }
+
+        // actualizamos la cuenta en la bd
+        await accountService.Update(new AccountDtoIn(account) );
+    }
+
 
 }
