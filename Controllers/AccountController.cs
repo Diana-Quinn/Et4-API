@@ -84,16 +84,15 @@ public class AccountController : ControllerBase
     {
         var accountToDelete = await accountService.GetById(id);
 
-        if(accountToDelete is not null)
-        {
-            await accountService.Delete(id);
-            return Ok();
-
-        }
-        else
-        {
+        if (accountToDelete is null)
             return AccountNotFound(id);
-        }
+        
+        if (accountToDelete.Balance != 0)
+            return BadRequest("El balance debe ser 0");
+
+        await accountService.Delete(id);
+        return Ok();
+
     }
 
     public NotFoundObjectResult AccountNotFound(int id)

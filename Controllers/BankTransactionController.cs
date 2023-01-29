@@ -4,6 +4,7 @@ using BankAPI.Services;
 using BankAPI.Data.BankModels;//para acceder a Client
 using TestBankAPI.Data.DTOs;
 
+
 namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
 
 [ApiController]
@@ -105,7 +106,11 @@ public class BankTransactionController : ControllerBase
     public async Task UpdateAccountBalance(BankTransaction bankTransaction)
     {
         // seleccionamos la cuenta de donde se hace la transaccion
-        var account = bankTransaction.Account;
+        //var account = new BankTransaction();
+        var account = await accountService.GetById(bankTransaction.AccountId);
+
+        if (account is null)
+            throw new Exception("luego decido el tipo de excepcion");
         
         // hacer la suma/resta correspondiente
         switch (bankTransaction.TransactionType) {
