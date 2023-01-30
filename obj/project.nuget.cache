@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "kFX1VTuf4fa7GidDve1cotwGcMGRv4y06RTii8/cgweyNW8jDziRC9QGJO6Zc/speQAcfcK/wNIaRFigGBUIUg==",
+  "dgSpecHash": "xMuhlMJ14zeDOCx3T1sLR7t4ZsNJe9q0wV+ExHjR5VIj8eSPi4Vp61lCTUAJMMFkzs7NCjI+BPDaEBZelq+suw==",
   "success": true,
   "projectFilePath": "C:\\Users\\diana\\CursoNet\\BankAPI\\BankAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\diana\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\diana\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\diana\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\diana\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.4\\microsoft.aspnetcore.authentication.jwtbearer.6.0.4.nupkg.sha512",
     "C:\\Users\\diana\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\diana\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\diana\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.1\\microsoft.data.sqlclient.5.0.1.nupkg.sha512",

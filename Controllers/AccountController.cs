@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;//ControllerBase
 using BankAPI.Services;
 using BankAPI.Data.BankModels;//para acceder a Client
 using TestBankAPI.Data.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class AccountController : ControllerBase

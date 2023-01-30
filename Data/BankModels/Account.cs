@@ -16,13 +16,15 @@ public partial class Account
 
     public DateTime RegDate { get; set; }
 
+    public bool? Enabled { get; set; }
+
 
     [JsonIgnore]
     public virtual AccountType AccountTypeNavigation { get; set; }
 
     [JsonIgnore]
     public virtual ICollection<BankTransaction> BankTransactions { get; } = new List<BankTransaction>();
-
+    
     [JsonIgnore]
     public virtual Client Client { get; set; }
 }

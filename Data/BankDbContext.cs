@@ -20,13 +20,18 @@ public partial class BankDbContext : DbContext
 
     public virtual DbSet<AccountType> AccountTypes { get; set; }
 
+    public virtual DbSet<Administrator> Administrators { get; set; }
+
     public virtual DbSet<BankTransaction> BankTransactions { get; set; }
 
     public virtual DbSet<Client> Clients { get; set; }
 
     public virtual DbSet<TransactionType> TransactionTypes { get; set; }
 
-    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=BankDB;Trusted_connection=true;trustServerCertificate=true");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -38,6 +43,9 @@ public partial class BankDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Balance).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ClientId).HasColumnName("ClientID");
+            entity.Property(e => e.Enabled)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
             entity.Property(e => e.RegDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -63,6 +71,39 @@ public partial class BankDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.RegDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Administrator>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Administ__3214EC27CADD9DDB");
+
+            entity.ToTable("Administrator");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.AdminType)
+                .IsRequired()
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(40)
+                .IsUnicode(false);
+            entity.Property(e => e.Pwd)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("PWD");
             entity.Property(e => e.RegDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -110,6 +151,12 @@ public partial class BankDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(40)
                 .IsUnicode(false);
+            entity.Property(e => e.Pwd)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('pa55w0rd')")
+                .HasColumnName("PWD");
             entity.Property(e => e.RegDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

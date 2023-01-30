@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace BankAPI.Data.BankModels;
 
-public partial class Client
+public partial class Administrator
 {
     public int Id { get; set; }
 
@@ -14,10 +13,9 @@ public partial class Client
 
     public string Email { get; set; }
 
-    public DateTime RegDate { get; set; }
-
     public string Pwd { get; set; }
 
-    [JsonIgnore]
-    public virtual ICollection<Account> Accounts { get; } = new List<Account>();
+    public string AdminType { get; set; }
+
+    public DateTime RegDate { get; set; }
 }
