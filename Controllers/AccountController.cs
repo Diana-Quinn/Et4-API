@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
 
-[Authorize]
+[Authorize]//usuarios autenticados para interactuar con los endpoints
 [ApiController]
 [Route("[controller]")]
 public class AccountController : ControllerBase
@@ -42,7 +42,7 @@ public class AccountController : ControllerBase
         return account; 
     }
     
-
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPost]
     public async Task<IActionResult> Create(AccountDtoIn account)//objeto de tipo cliente, llamado cliente
     {
@@ -56,6 +56,7 @@ public class AccountController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = newAccount.Id}, newAccount);
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, AccountDtoIn account)
     {
@@ -81,6 +82,7 @@ public class AccountController : ControllerBase
         }
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

@@ -34,7 +34,7 @@ public class ClientController : ControllerBase
         return client; // SI SE ENCUENTRA, DEVUELVE A ESE CLIENTE
     }
     
-
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPost]
     public async Task<IActionResult> Create(Client client)//objeto de tipo cliente, llamado cliente
     {   //crea cliente
@@ -43,6 +43,7 @@ public class ClientController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = newClient.Id}, client );//201 created
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Client client)
     {
@@ -62,6 +63,7 @@ public class ClientController : ControllerBase
         }
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

@@ -36,9 +36,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = false,
             ValidateAudience = false
         };
-    }
-
-    );
+    });
+//definimos politica de autorizacion
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("SuperAdmin", policy => policy.RequireClaim("AdminType", "Super"));
+});
 
 //app = middleware
 var app = builder.Build();
