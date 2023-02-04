@@ -4,7 +4,7 @@ namespace TestBankAPI.Data.DTOs;
 
 public class AccountDtoIn
 {
-    public int Id { get; set; }
+    public int? Id { get; set; } // puede ser null porque aun no tienes la id, apenas estas creando el objeto
 
     public int AccountType { get; set; }
 

@@ -4,6 +4,7 @@ using BankAPI.Services;
 using BankAPI.Data.BankModels;//para acceder a Client
 using TestBankAPI.Data.DTOs;
 using BankAPI.Data.DTOs;
+using BankAPI;
 
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +39,8 @@ public class LoginClientController : ControllerBase
         //generar un token
         return Ok( new { token = jwtToken } );
 
+       
+
     }
 
     //metodo para generar token
@@ -61,6 +64,32 @@ public class LoginClientController : ControllerBase
 //var identity = HttpContext.User.Identity as ClaimsIdentity;
         return token; //cadena serializada
         
+    }
+
+    public Dictionary<string, string> RetrieveClaims(string token){
+
+        var claimsDict = new Dictionary<string, string>();
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JWT:Key").Value)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+
+        try {
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            foreach (var claim in jwtToken.Claims)
+            {
+                claimsDict[claim.Type] = claim.Value;
+            }
+            return claimsDict;
+
+        } catch (Exception ex) {
+            Console.WriteLine(ex);
+            
+        }
+        return null;
     }
 
 

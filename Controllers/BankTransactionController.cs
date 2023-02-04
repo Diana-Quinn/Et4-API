@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;//ControllerBase
 using BankAPI.Services;
 using BankAPI.Data.BankModels;//para acceder a Client
 using TestBankAPI.Data.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace BankAPI.Controllers; //nombre projecto . ubicacion de clase
@@ -26,18 +27,20 @@ public class BankTransactionController : ControllerBase
         TransactionTypeService transactionTypeService,
         BankTransactionService bankTransactionService)
     {
-        this.accountService = accountService;
+        this.accountService = accountService;   
         this.accountTypeService = accountTypeService;
         this.clientService = clientService;
         this.transactionTypeService = transactionTypeService;
         this.bankTransactionService = bankTransactionService;
     }
     
+    
     [HttpGet] //Solicitud GET
     public async Task<IEnumerable<BankTransaction>> Get()//Devuelve lista de bank transactions 
     {
         return await bankTransactionService.GetAll(); 
     }
+
 
     [HttpGet("{id}")] 
     public async Task<ActionResult<BankTransaction>> GetById(int id) //Objeto ActionResult obtiene diferentes metodos de la clase ControllerBase
@@ -50,7 +53,7 @@ public class BankTransactionController : ControllerBase
         return bankTransaction; // SI SE ENCUENTRA, DEVUELVE A ESE CLIENTE
     }
     
-
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPost]
     public async Task<IActionResult> Create(BankTransactionDTO bankTransaction)//objeto de tipo cliente, llamado cliente
     {   //crea cliente
@@ -61,6 +64,7 @@ public class BankTransactionController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = newBankTransaction.Id}, newBankTransaction );//201 created
     }
 
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, BankTransactionDTO bankTransaction)
     {
@@ -80,6 +84,7 @@ public class BankTransactionController : ControllerBase
             return BankTransactionNotFound(id);
         }
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

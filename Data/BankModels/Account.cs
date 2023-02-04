@@ -15,7 +15,8 @@ public partial class Account
     public decimal Balance { get; set; }
 
     public DateTime RegDate { get; set; }
-
+    
+    //[JsonIgnore]
     public bool? Enabled { get; set; }
 
 

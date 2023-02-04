@@ -3,12 +3,13 @@ using BankAPI.Data; //INDICAMOS DONDE ESTA ALMACENADO EL PROYECTO
 using BankAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,9 +40,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
 //definimos politica de autorizacion
 builder.Services.AddAuthorization(options => {
-    options.AddPolicy("SuperAdmin", policy => policy.RequireClaim("AdminType", "Super"));
+    options.AddPolicy("SuperAdmin", policy => policy.RequireClaim("AdminType", "super"));
+});
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("User", policy => policy.RequireClaim("Email",ClaimTypes.Email));
 });
 
 //app = middleware
